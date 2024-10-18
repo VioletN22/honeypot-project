@@ -1,0 +1,13 @@
+# Virtual environment
+cowrie-env/
+
+# Log files
+logs/
+*.log
+
+# Bytecode and cache files
+__pycache__/
+*.pyc
+
+# Local configuration files (example)
+config/*.local
