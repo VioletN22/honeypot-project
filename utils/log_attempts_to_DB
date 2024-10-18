@@ -1,0 +1,70 @@
+import json
+import mysql.connector
+import os
+from datetime import datetime
+from mysql.connector import errorcode
+
+# Database connection settings
+db_config = {
+    'user': 'cowrie_user',
+    'password': 'Violet1234*',
+    'host': 'localhost',
+    'database': 'honeypot_logs',
+    'raise_on_warnings': True
+}
+
+# Connect to MySQL
+try:
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
+    print("Successfully connected to the database")
+except mysql.connector.Error as err:
+    print(f"Error: {err}")
+    exit(1)
+
+# Path to Cowrie JSON log file
+log_file_path = "/home/ubuntu/cowrie/var/log/cowrie/cowrie.json"
+
+# Read and parse the log file
+try:
+    with open(log_file_path, 'r') as log_file:
+        for line in log_file:
+            try:
+                log_entry = json.loads(line)
+
+                # Consider login attempts
+                if log_entry.get("eventid") == "cowrie.login.failed":
+                    success = 0  # Failed login
+                elif log_entry.get("eventid") == "cowrie.login.success":
+                    success = 1  # Successful login
+                else:
+                    continue  # Skip other events
+
+                username = log_entry.get("username")
+                password = log_entry.get("password")
+                timestamp = log_entry.get("timestamp").replace('T', ' ').replace('Z', '')  # Convert to MySQL-compatible format
+                src_ip = log_entry.get("src_ip")
+
+                # Insert data into login_attempts table
+                query = ("INSERT INTO login_attempts "
+                         "(username, password, timestamp, src_ip, success) "
+                         "VALUES (%s, %s, %s, %s, %s)")
+                cursor.execute(query, (username, password, timestamp, src_ip, success))
+                conn.commit()
+
+                print(f"Inserted {'successful' if success else 'failed'} login attempt for user {username} from IP {src_ip}")
+
+            except mysql.connector.Error as err:
+                if err.errno == errorcode.ER_DUP_ENTRY:
+                    print(f"Skipped existing record for user {username} from IP {src_ip}")
+                else:
+                    print(f"Error: {err}")
+            except json.JSONDecodeError:
+                continue  # Skip lines that cannot be parsed
+
+except FileNotFoundError:
+    print(f"Log file {log_file_path} not found")
+finally:
+    # Close the database connection
+    cursor.close()
+    conn.close()

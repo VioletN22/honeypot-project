@@ -1,0 +1,104 @@
+body {
+        font-family: Arial, sans-serif; 
+        margin: 20px; 
+        background-color: #f4f4f4; 
+        text-align: center; /* This will center the title */
+    }
+    
+    h1 {
+        color: #333; text-align: center; 
+    }
+    
+    pre {
+        background-color: #fff; 
+        padding: 10px; 
+        border-radius: 5px; 
+        border: 1px solid #ccc; 
+        overflow: auto; 
+        max-height: 500px; 
+        margin: auto; /* Centers the pre element */
+        width: 80%; /* Optional: adjusts width */
+    }
+    
+    nav {
+        background-color: #333;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+    nav ul li {
+        display: inline;
+        margin-right: 20px;
+    }
+    nav ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 14px 20px;
+        display: inline-block;
+    }
+    nav ul li a:hover {
+        background-color: #575757;
+        border-radius: 5px;
+    }
+    
+    .table-container {
+        overflow-x: auto;  /* Allow horizontal scrolling if necessary */
+        max-height: 500px;  /* Keep the height manageable */
+        margin: 20px auto;  /* Center the container */
+        width: 80%;
+    }
+
+    table {
+        width: 100%;  /* Centers the table, keeping it in line with the pre element */
+        border-collapse: collapse;  /* Remove extra space between cells */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    table, th, td {
+        border: 1px solid #ccc;  /* Consistent border style */
+    }
+    
+    th, td {
+        padding: 10px;
+        text-align: left;  /* Align text to the left for better readability */
+        word-break: break-all;  /* Force long words to break */
+        overflow-wrap: anywhere;  /* Allow breaking of very long words anywhere */
+    }
+    
+    th {
+        text-align: center;  /* Align text to the left for better readability */
+        background-color: #f2f2f2;  /* Light grey for table headers */
+    }
+    
+    /* Set specific column widths */
+    .time-column {
+        width: 20%;
+    }
+    .username-column {
+        width: 20%;
+    }
+    .password-column {
+        width: 20%;  /* Reduced width for the password */
+    }
+    .success-column {
+        width: 15%;
+    }
+    .source-ip-column {
+        width: 20%;
+    }
+    
+    /* Styling for the table to allow scrolling */
+    .table-container {
+        overflow-x: auto;
+        max-height: 500px;  /* Keep the height manageable */
+        margin: 0 auto;  /* Center the container */
+    }
+
+    .success-row {
+        color: red;  /* Set text color to red for better visibility of breaches */
+    }
